@@ -1,42 +1,47 @@
 package tree;
 
-public class BinaryTree<T> {
-    private Node root;
+/**
+ * Created by muscaestar on 2/15/20
+ *
+ * @author muscaestar
+ */
+public class BinaryTree<E> {
+    protected Node<E> root;
 
-    static class Node {
-        Object self;
-        Node leftNode;
-        Node rightNode;
+    static class Node<E> {
+        E element;
+        Node<E> leftNode;
+        Node<E> rightNode;
 
-        public Node(Object self) {
-            this.self = self;
+        public Node(E element) {
+            this.element = element;
         }
 
-        public Node(Object self, Node leftNode, Node rightNode) {
-            this.self = self;
+        public Node(E element, Node<E> leftNode, Node<E> rightNode) {
+            this.element = element;
             this.leftNode = leftNode;
             this.rightNode = rightNode;
         }
 
         @Override
         public String toString() {
-            return self.toString();
+            return element.toString();
         }
     }
 
-    public BinaryTree(Node root) {
+    public BinaryTree(Node<E> root) {
         this.root = root;
     }
 
-    public Node getRoot() {
+    public Node<E> getRoot() {
         return root;
     }
 
-    public void setRoot(Node root) {
+    public void setRoot(Node<E> root) {
         this.root = root;
     }
 
-    public void preOrder(Node N) {
+    public void preOrder(Node<E> N) {
         if (N == null) {
             return;
         }
@@ -45,7 +50,7 @@ public class BinaryTree<T> {
         preOrder(N.rightNode);
     }
 
-    public void inOrder(Node N) {
+    public void inOrder(Node<E> N) {
         if (N == null) {
             return;
         }
@@ -54,7 +59,7 @@ public class BinaryTree<T> {
         inOrder(N.rightNode);
     }
 
-    public void postNode(Node N) {
+    public void postNode(Node<E> N) {
         if (N == null) {
             return;
         }

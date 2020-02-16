@@ -3,12 +3,18 @@ package tree;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import tree.BinaryTree.Node;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Created by muscaestar on 2/15/20
+ *
+ * @author muscaestar
+ */
 public class BinaryTreeTest {
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -20,7 +26,7 @@ public class BinaryTreeTest {
     public void setUp() throws Exception {
         System.setOut(new PrintStream(outContent));
 
-        /**
+        /*
          *       1
          *     /   \
          *    2     3
@@ -28,10 +34,9 @@ public class BinaryTreeTest {
          *  4  5  6   7
          *
          */
-        BinaryTree.Node leftInnerNode = new BinaryTree.Node(2, new BinaryTree.Node(4), new BinaryTree.Node(5));
-        BinaryTree.Node rightInnerNode = new BinaryTree.Node(3, new BinaryTree.Node(6), new BinaryTree.Node(7));
-        threeLvBT = new BinaryTree<>(
-                new BinaryTree.Node(1, leftInnerNode, rightInnerNode));
+        Node<Integer> leftInnerNode = new Node<>(2, new Node<>(4), new Node<>(5));
+        Node<Integer> rightInnerNode = new Node<>(3, new Node<>(6), new Node<>(7));
+        threeLvBT = new BinaryTree<>(new Node<>(1, leftInnerNode, rightInnerNode));
     }
 
     @After
