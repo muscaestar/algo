@@ -110,9 +110,10 @@ public class BinarySearchTreeTest {
 
     @Test
     public void delete_1() {
-        twoLvBST.delete(1);
+        Node<Integer> ret = twoLvBST.delete(1);
         twoLvBST.printSortedEle();
         assertEquals("58", outContent.toString());
+        assertEquals(Integer.valueOf(5), ret.element); // root should be eventually returned
     }
 
     @Test
@@ -135,10 +136,11 @@ public class BinarySearchTreeTest {
     public void delete_4Level_5() {
         twoLvBST.insert(6);
         twoLvBST.insert(7);
-        twoLvBST.delete(5);
+        Node<Integer> ret = twoLvBST.delete(5);
         twoLvBST.printSortedEle();
         assertEquals("1678", outContent.toString());
-        assertEquals(Integer.valueOf(6), twoLvBST.root.element); //new root should be 6
+        assertEquals(Integer.valueOf(6), twoLvBST.root.element); // new root should be 6
+        assertEquals(Integer.valueOf(6), ret.element); // new root should be eventually returned
     }
 
     @Test
@@ -147,5 +149,13 @@ public class BinarySearchTreeTest {
         onlyRootTree.delete("only");
         onlyRootTree.printSortedEle();
         assertNull(onlyRootTree.root);
+    }
+
+    @Test
+    public void deleteNotExist() {
+        Node<Integer> ret = twoLvBST.delete(7);
+        twoLvBST.printSortedEle();
+        assertEquals("158", outContent.toString());
+        assertEquals(Integer.valueOf(5), ret.element);
     }
 }
