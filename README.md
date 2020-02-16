@@ -5,6 +5,7 @@ My algorithms study notes
 ### Binary Tree
 - Implementation with linked node
 - 3 basic recursive traversals: NLR, LNR, LRN 
+- [TODO] Level-order traversal: a BFS
 - Unit test
 ### Binary Search Tree
 - Inherit from Binary Tree
