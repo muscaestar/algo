@@ -39,13 +39,18 @@ public class BinaryMinHeap<E extends Comparable<? super E>> {
         return size >= capacity + 1;
     }
 
+    public E peak() {
+        return (size == 0) ? null : array[1];
+    }
+
     public E add(E e) {
         if (isFull()) {
             throw new IndexOutOfBoundsException("!!! Heap is full");
         }
 
-        int i = size + 1; // index of tail node, will be filled by e
-        if (size++ == 0) { // check if empty, then add size
+        // size plus one, and make tail be the empty node
+        int i = size + 1; // index of empty node
+        if (size++ == 0) { // check if heap is empty, then add size
             array[i] = e;
         }
         i = siftUp(i, e);
@@ -54,31 +59,75 @@ public class BinaryMinHeap<E extends Comparable<? super E>> {
 
     /**
      * Up-heapify the heap.
-     * Right at the start of this method, the 'heap' is broken.
-     * It is the tail node of the heap needed to be re-allocated.
+     * At the start of this method, the 'heap' has an empty node.
+     * This method re-allocate the empty node by keeping comparing it
+     * with its parent, then swap if need.
+     * After re-allocation, fill element e into it.
      *
-     * @param i the index of tail node
-     * @param e the element going to be fill in
-     * @return the index of the entry finally filled by e
+     * @param i the index of empty node
+     * @param e the element going to fill in
+     * @return the final index of original empty node
      */
     private int siftUp(int i, E e) {
-        while (i > 1) { // while the entry to fill is not root
-            int p = i / 2; // current index of parent of entry to fill
+        while (i > 1) { // while the empty node is not the top
+            int parent = i / 2;
 
-            int cmp = e.compareTo(array[p]);
+            int cmp = e.compareTo(array[parent]);
             if (cmp < 0) {
-                array[i] = array[p];
-                i = p;
+                array[i] = array[parent];
+                i = parent;
             } else { // cmp >= 0
                 break;
             }
         }
-        array[i] = e; // fill the entry with e
+        array[i] = e; // fill the empty node with e
         return i;
     }
 
-    public E peak() {
-        return (size == 0) ? null : array[1];
+    public E poll() {
+        E res = array[1];
+        array[1] = null; // make top be the empty node
+
+        E e = array[size]; // the value of tail node will be fill in later
+        array[size--] = null; // remove the tail node, size - 1
+
+        siftDown(1, e);
+        return res;
     }
 
+    /**
+     * Down-heapify the heap.
+     * At the start of this method, the 'heap' has an empty node.
+     * This method re-allocate the empty node by keeping comparing it
+     * with its least child, then swap if need.
+     * After re-allocation, fill element e into it.
+     *
+     * @param i the index of the empty node
+     * @param e the element going to fill in
+     * @return the final index of the original empty node
+     */
+    private int siftDown(int i, E e) {
+        while (i <= size / 2) { // make sure empty node is non-leaf
+            int ch1 = i * 2; // index of child 1
+            int ch2 = ch1 + 1; // index of child 2, if exist
+
+            int leastChild = ch1;
+            // if ch2 exist, then compare children to get the least one
+            if (ch2 <= size && array[ch1].compareTo(array[ch2]) > 0) {
+                leastChild = ch2;
+            }
+
+            int cmp = e.compareTo(array[leastChild]);
+            if (cmp > 0) {
+                E tmp = array[leastChild];
+                array[leastChild] = array[i];
+                array[i] = tmp;
+                i = leastChild;
+            } else {
+                break;
+            }
+        }
+        array[i] = e; // fill the empty node with e
+        return i;
+    }
 }
