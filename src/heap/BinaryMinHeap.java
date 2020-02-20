@@ -1,6 +1,7 @@
 package heap;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * This is a fix size, min-heap.
@@ -10,8 +11,8 @@ import java.util.Arrays;
  * @author muscaestar
  */
 public class BinaryMinHeap<E extends Comparable<? super E>> {
-    private E[] array; // store element
-    private int size; // number of element stored
+    private E[] array; // store elements
+    private int size; // number of elements stored
     private int capacity; // length of array - 1
 
     public BinaryMinHeap(int capacity) {
@@ -21,6 +22,22 @@ public class BinaryMinHeap<E extends Comparable<? super E>> {
         this.capacity = capacity;
         array = (E[]) new Comparable[this.capacity + 1];
         size = 0;
+    }
+
+    public BinaryMinHeap(int capacity, E[] rawArray) {
+        if (rawArray.length > capacity) {
+            throw new IllegalArgumentException("!!! capacity should at least equal to the length of input array");
+        }
+        if (Arrays.stream(rawArray).anyMatch(Objects::isNull)) {
+            throw new IllegalArgumentException("!!! input array should not contain null");
+        }
+
+        this.capacity = capacity;
+        array = (E[]) new Comparable[this.capacity + 1];
+        System.arraycopy(rawArray,0, array,1,rawArray.length);
+        size = rawArray.length;
+
+        build();
     }
 
     public E[] getArray() {
@@ -58,7 +75,7 @@ public class BinaryMinHeap<E extends Comparable<? super E>> {
     }
 
     /**
-     * Up-heapify the heap.
+     * Heapify-up the heap.
      * At the start of this method, the 'heap' has an empty node.
      * This method re-allocate the empty node by keeping comparing it
      * with its parent, then swap if need.
@@ -96,7 +113,7 @@ public class BinaryMinHeap<E extends Comparable<? super E>> {
     }
 
     /**
-     * Down-heapify the heap.
+     * Heapify-down the heap.
      * At the start of this method, the 'heap' has an empty node.
      * This method re-allocate the empty node by keeping comparing it
      * with its least child, then swap if need.
@@ -129,5 +146,17 @@ public class BinaryMinHeap<E extends Comparable<? super E>> {
         }
         array[i] = e; // fill the empty node with e
         return i;
+    }
+
+    /**
+     * Build a heap from an unsroted array.
+     *
+     * @return true
+     */
+    private boolean build() {
+        for (int i = size / 2; i >= 1; i--) {
+            siftDown(i, array[i]);
+        }
+        return true;
     }
 }

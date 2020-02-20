@@ -23,12 +23,14 @@ public class BinaryMinHeapTest {
     private final BinaryMinHeap<String> emptyHeap = new BinaryMinHeap<>(1);
     private BinaryMinHeap<String> bHeap;
     public static final int HEAP_CAPACITY = 5;
+    private String[] inputUnsortedArr;
 
     @Before
     public void setUp() throws Exception {
         System.setOut(new PrintStream(outContent));
 
         bHeap = new BinaryMinHeap<>(HEAP_CAPACITY);
+        inputUnsortedArr = new String[]{"F", "E", "D", "C", "B", "A"};
     }
 
     @After
@@ -101,4 +103,33 @@ public class BinaryMinHeapTest {
         assertNull(emptyHeap.poll());
     }
 
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testConstructorIllegalArgs1() {
+        BinaryMinHeap<String> bmh = new BinaryMinHeap<>(5, inputUnsortedArr);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testConstructorIllegalArgs2() {
+        String[] input = new String[]{"A", "B", null, null};
+        BinaryMinHeap<String> bmh = new BinaryMinHeap<>(10, input);
+    }
+
+    @Test
+    public void testConstructorHappyPath() {
+        BinaryMinHeap<String> bmh = new BinaryMinHeap<>(10, inputUnsortedArr);
+        assertEquals("[null, A, B, D, C, E, F, null, null, null, null]", Arrays.toString(bmh.getArray()));
+    }
+
+    @Test
+    public void test() {
+        System.setOut(originalOut);
+        int i = Integer.MAX_VALUE;
+        System.out.println("value of i is " + i);
+        System.out.println(Integer.toBinaryString(i));
+//        i = i << 1;
+        i = i * 4;
+        System.out.println("after left shift, value of i is " + i);
+        System.out.println(Integer.toBinaryString(i));
+    }
 }
